@@ -4,68 +4,46 @@
     android:layout_height="match_parent"
     android:paddingLeft="5dp"
     android:paddingRight="5dp"
-    android:paddingTop="5dp"
+    android:paddingTop="10dp"
     android:paddingBottom="5dp"
-    android:background="@drawable/gitbg"
+
     tools:context="com.example.mukesh.github.onListClick">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
-        android:id="@+id/ll">
+        android:id="@+id/ll"
+        android:background="#5C6BC0">
 
         <ScrollView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_weight="1">
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="70dp"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="3dp"
                 android:id="@+id/head_on_list"
                 android:textSize="30sp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"
                 android:textColor="#000000"
-                android:layout_marginBottom="3dp"
                 android:textStyle="italic|bold"
                 android:scrollbars="vertical"/>
 
         </ScrollView>
 
         <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:id="@+id/imageView"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp" />
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/imageView" />
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ll"
-        android:id="@+id/scrollView">
-
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/data_on_list"
-            android:textSize="20sp"
-            android:textColor="#000000"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="15dp"
-            android:scrollbars="vertical"/>
-
-    </ScrollView>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/buttonll"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <ImageButton
@@ -84,16 +62,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/list_repo"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
             android:text="View Public Repo"
             android:clickable="true"
             android:layout_weight="1"
             android:onClick="onlistrepo"
             android:layout_gravity="center_vertical"
-            android:background="#ff8dba" />
+            android:background="#880E4F"
+            android:textColor="#ffffff"
+            android:textStyle="bold"/>
     </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/ll"
+        android:id="@+id/scrollView"
+        android:layout_marginTop="10dp"
+        android:background="#5C6BC0"
+        android:layout_above="@id/buttonll"
+        android:layout_marginBottom="10dp">
+
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/data_on_list"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="15dp"
+            android:scrollbars="vertical" />
+
+    </ScrollView>
 
 </RelativeLayout>

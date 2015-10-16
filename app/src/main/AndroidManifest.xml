@@ -34,7 +34,8 @@
         </activity>
         <activity
             android:name=".onListClick"
-            android:label="GitHub" >
+            android:label="GitHub"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
