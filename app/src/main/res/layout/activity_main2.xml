@@ -24,20 +24,9 @@
             android:textSize="20dp"
             android:hint="Enter ID"
             android:background="#880E4F"
-            android:textColor="#ffffff" />
-
-        <Button
-            android:id="@+id/search_button2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Search"
-            android:paddingTop="5dp"
-            android:paddingBottom="7dp"
-            android:clickable="true"
-            android:onClick="onsearch2"
             android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:background="#880E4F"/>
+            android:imeOptions="actionSearch"
+            android:inputType="text"/>
     </LinearLayout>
 
 

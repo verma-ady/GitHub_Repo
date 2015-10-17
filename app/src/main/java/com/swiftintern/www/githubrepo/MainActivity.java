@@ -7,10 +7,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swiftintern.www.githubrepo.R;
@@ -34,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         b = new database ( getApplicationContext());
         Log.v("Main", "oncreate");
-
+        keyevent();
 //        Fragment frag = (Fragment) getFragmentManager().findFragmentById(R.layout.fragment_home);
     }
 
@@ -45,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void onsearch( View v ){
+    public void onsearch(){
         Log.v("Main", "onclick");
         EditText ed= (EditText)findViewById(R.id.search);
         if(ed.getText().length() == 0 ){
@@ -61,6 +65,23 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
             gt.execute(value);
         }
+    }
+
+    public void keyevent(){
+        EditText srch_edit = (EditText) findViewById(R.id.search);
+        Log.v("keyevent", "1" );
+        srch_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.v("keyevent", "12" );
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Log.v("keyevent", "13" );
+                    onsearch();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public class getRepo extends AsyncTask<String, Void, String > {

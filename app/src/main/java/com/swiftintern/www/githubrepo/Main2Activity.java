@@ -8,13 +8,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swiftintern.www.githubrepo.R;
@@ -47,6 +50,11 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         Log.v("M2oncreate ", "begins");
         d=new database(getApplicationContext());
+        setList();
+        keyevent1();
+    }
+
+    public void setList(){
         Intent intent = getIntent();
         imageButton = (ImageButton) findViewById(R.id.follow_button);
         if( intent!=null && intent.hasExtra(Intent.EXTRA_TEXT)){
@@ -86,6 +94,7 @@ public class Main2Activity extends AppCompatActivity {
 //                Toast
                 e.printStackTrace();
             }
+
         }
 
         ListView lv = (ListView) findViewById(R.id.repolistView);
@@ -93,11 +102,25 @@ public class Main2Activity extends AppCompatActivity {
         arrayAdapter.clear();
         arrayAdapter.addAll(repoList);
         lv.setAdapter((ArrayAdapter<String>)arrayAdapter);
-
     }
 
+    public void keyevent1(){
+        EditText srch_edit = (EditText) findViewById(R.id.search2);
+        srch_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.v("keyevent", "12");
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Log.v("keyevent", "13");
+                    onsearch2();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
 
-    public void onsearch2( View v ){
+    public void onsearch2(){
         Log.v("Main2", "onearch");
         EditText ed2= (EditText)findViewById(R.id.search2);
         boolean b = d.isthere( ed2.getText().toString() );

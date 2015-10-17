@@ -213,24 +213,24 @@ public class onListClick extends AppCompatActivity {
 
             TextView data = (TextView) findViewById(R.id.data_on_list);
             StringBuffer strData=new StringBuffer();
-            strData.append("User ID       : " + id.toString() + "\n");
+            strData.append("User ID : " + "\t\t" + id.toString() + "\n");
             if (mail!="null"){
-                strData.append("EMail ID      : " + mail + "\n");
+                strData.append("EMail ID : " + "\t\t" + mail + "\n");
             } else{
-                strData.append("EMail ID      : " + "********" + "\n");
+                strData.append("EMail ID : " +  "\t\t" + "********" + "\n");
             }
 
             if (company!="null"){
-                strData.append("Company       : " + company + "\n");
+                strData.append("Company : " + "\t\t" + company + "\n");
             }
 
             if(location!="null"){
-                strData.append("Location      : " + location + "\n");
+                strData.append("Location : " + "\t\t" + location + "\n");
             }
 
-            strData.append("Public Repos  : " + repos.toString()  + "\n");
-            strData.append("Followers     : " + follower.toString() + "\n");
-            strData.append("Following     : " + following.toString() + "\n");
+            strData.append("Public Repos : " + "\t\t" + repos.toString()  + "\n");
+            strData.append("Followers : " + "\t\t" + follower.toString() + "\n");
+            strData.append("Following : " + "\t\t" + following.toString() + "\n");
 
             text_data= strData.toString();
             Log.v("Onpost", text_data);
