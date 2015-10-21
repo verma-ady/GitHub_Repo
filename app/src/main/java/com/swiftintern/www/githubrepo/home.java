@@ -1,9 +1,15 @@
 package com.swiftintern.www.githubrepo;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.GestureDetectorCompat;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +18,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 
 //
 ///**
@@ -25,7 +40,7 @@ import java.util.Arrays;
 // * create an instance of this fragment.
 // */
 
-public class home extends Fragment {
+public class home extends Fragment{
 //    // TODO: Rename parameter arguments, choose names that match
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 //    private static final String ARG_PARAM1 = "param1";
@@ -55,6 +70,7 @@ public class home extends Fragment {
 //        return fragment;
 //    }
 
+    private GestureDetector gestureDetector;
     public home() {
         // Required empty public constructor
     }
@@ -62,6 +78,7 @@ public class home extends Fragment {
     database d;
     View root;
     ListView lv;
+    ProgressDialog dialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +93,8 @@ public class home extends Fragment {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         d=new database(getActivity());
         lv = (ListView) root.findViewById(R.id.followlistView);
-        showlist();
 
+        showlist();
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -85,6 +102,20 @@ public class home extends Fragment {
                 String name = (String) parent.getItemAtPosition(position);
                 Intent intent = new Intent(getActivity(), onListClick.class).putExtra(Intent.EXTRA_TEXT, name);
                 startActivity(intent);
+            }
+        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("Long Click", parent.getItemAtPosition(position).toString());
+                dialog = new ProgressDialog(getActivity());
+                dialog.setProgressStyle(android.R.attr.progressBarStyleSmall);
+                dialog.setMessage("Connecting To GitHub");
+                dialog.show();
+                getRepoHome gt = new getRepoHome();
+                gt.execute(parent.getItemAtPosition(position).toString());
+                return true;
             }
         });
 
@@ -118,6 +149,92 @@ public class home extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.fragment_home, R.id.followlist, arlist);
         lv.setAdapter(arrayAdapter);
     }
+
+    public class getRepoHome extends AsyncTask<String, Void, String > {
+
+        private final String LOG_CAT = getRepoHome.class.getSimpleName();
+        @Override
+        protected String doInBackground(String... params) {
+
+            Log.v(LOG_CAT, "URL is " + "doInBackground");
+            String error=null;
+            if( params.length == 0 ){
+                return "null_noInput";
+            }
+
+            HttpURLConnection urlConnection = null;
+            BufferedReader bufferedReader = null;
+
+            String base = "https://api.github.com/users";
+            String repo= "repos";
+
+            URL url = null;
+            try {
+
+                Uri uri = Uri.parse(base).buildUpon().appendPath(params[0]).appendPath(repo).build();
+
+                //url = new URL("https://api.github.com/users/verma-ady/repos");
+                Log.v(LOG_CAT, uri.toString());
+                url= new URL(uri.toString());
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+
+                StringBuffer buffer = new StringBuffer();
+                if(inputStream==null){
+                    return "null_inputstream";
+                }
+
+                bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                String line ;
+
+                while ( (line=bufferedReader.readLine())!=null ){
+                    buffer.append(line + '\n');
+                }
+
+                if (buffer.length() == 0) {
+                    return "null_inputstream";
+                }
+
+                String stringJSON = new String();
+                stringJSON = buffer.toString();
+                Log.v(LOG_CAT, stringJSON );
+                return stringJSON;
+            } catch (UnknownHostException | ConnectException e) {
+                error = "null_internet" ;
+                e.printStackTrace();
+            } catch (IOException e) {
+                error= "null_file";
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (final IOException e) {
+                        Log.e(LOG_CAT, "ErrorClosingStream", e);
+                    }
+                }
+            }
+            return error;
+        }//doinbackground
+
+        @Override
+        protected void onPostExecute(String strJSON) {
+
+            dialog.dismiss();
+            Log.v("MainActivity ", "on post " );
+            Intent intent = new Intent ( getActivity(), Main2Activity.class).putExtra(Intent.EXTRA_TEXT, strJSON );
+            startActivity(intent);
+
+        }
+    }//getrepo
+
 
 
     //    // TODO: Rename method, update argument and hook method into UI event

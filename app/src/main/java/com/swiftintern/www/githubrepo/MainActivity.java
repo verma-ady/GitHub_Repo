@@ -28,6 +28,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+
 public class MainActivity extends AppCompatActivity {
 
     database b;
@@ -73,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         srch_edit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.v("keyevent", "12" );
+                Log.v("keyevent", "12");
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Log.v("keyevent", "13" );
+                    Log.v("keyevent", "13");
                     onsearch();
                     return true;
                 }
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
     public class getRepo extends AsyncTask<String, Void, String > {
 
         private final String LOG_CAT = getRepo.class.getSimpleName();
-
         @Override
         protected String doInBackground(String... params) {
 
